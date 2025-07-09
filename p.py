@@ -1,10 +1,10 @@
 import yt_dlp
 import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes, CallbackQueryHandler
 
-BOT_TOKEN = '8073549221:AAErrZipsE_tePrgSg8AJMLTKyhS-pBtefA'  # Replace with your actual bot token
-CHANNEL_LINK = "https://t.me/+_ZyI9w3QwGU0ZTM1"  # Optional channel
+BOT_TOKEN = '8073549221:AAErrZipsE_tePrgSg8AJMLTKyhS-pBtefA'  # Replace this with your actual bot token
+CHANNEL_LINK = "https://t.me/+_ZyI9w3QwGU0ZTM1"  # Optional channel URL
 
 # Start Command
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -19,7 +19,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode="Markdown"
     )
 
-# Button Handler
+# About Button
 async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -67,40 +67,14 @@ async def download_reel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         print("Error:", e)
         await update.message.reply_text("⚠️ *Download failed.* The reel might be private or invalid.", parse_mode="Markdown")
 
-# Main
-if __name__ == '__main__':
+# Run Bot
+if __name__ == "__main__":
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, download_reel))
-    app.add_handler(MessageHandler(filters.COMMAND, start))
-    app.add_handler(MessageHandler(filters.ALL, download_reel))
-    app.add_handler(MessageHandler(filters.StatusUpdate, start))
-    app.add_handler(MessageHandler(filters.UpdateType, start))
     app.add_handler(CommandHandler("about", start))
-    app.add_handler(MessageHandler(filters.PHOTO, start))
-    app.add_handler(CommandHandler("help", start))
-    app.add_handler(CommandHandler("join", start))
-    app.add_handler(CommandHandler("info", start))
-    app.add_handler(CommandHandler("channel", start))
-    app.add_handler(CommandHandler("feedback", start))
-    app.add_handler(CommandHandler("report", start))
-    app.add_handler(CommandHandler("contact", start))
-    app.add_handler(CommandHandler("faq", start))
-    app.add_handler(CommandHandler("how", start))
-    app.add_handler(CommandHandler("guide", start))
-    app.add_handler(CommandHandler("yt", start))
-    app.add_handler(CommandHandler("fb", start))
-    app.add_handler(CommandHandler("insta", start))
-    app.add_handler(CommandHandler("tiktok", start))
-    app.add_handler(CommandHandler("download", start))
-    app.add_handler(CommandHandler("reel", start))
-    app.add_handler(CommandHandler("video", start))
-    app.add_handler(CommandHandler("save", start))
-    app.add_handler(CommandHandler("get", start))
-    app.add_handler(CommandHandler("grab", start))
-    app.add_handler(CommandHandler("fetch", start))
-    app.add_handler(CommandHandler("more", start))
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.ALL, button))
+    app.add_handler(CallbackQueryHandler(button))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, download_reel))
+
+    print("✅ Bot is running...")
     app.run_polling()
